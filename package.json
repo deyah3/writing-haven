@@ -1,0 +1,24 @@
+{
+  "name": "writing-haven",
+  "version": "1.0.0",
+  "description": "A simple writing space, small personal project.",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deyah3/writing-haven.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/deyah3/writing-haven/issues"
+  },
+  "homepage": "https://github.com/deyah3/writing-haven#readme",
+  "devDependencies": {
+    "electron": "^37.3.0"
+  }
+}
