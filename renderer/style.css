@@ -32,11 +32,11 @@ h1 {
 /* Textarea */
 textarea {
   flex: 1;
-  width: 100%;
-  padding: 12px;
+  width: 95%;
+  padding: 11px;
   font-size: 16px;
-  line-height: 1.5;
-  border: 1px solid #ccc;
+  line-height: 1.9;
+  border: 1px solid #c8ddff;
   outline: none;
   resize: none;
 }
