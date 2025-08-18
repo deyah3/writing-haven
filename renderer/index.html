@@ -1,13 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Writing Haven</title>
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Writing Haven</h1>
-  <textarea id="editor" placeholder="Start writing..."></textarea>
-  <script src="renderer.js"></script>
+  <!-- Sidebar for notes list -->
+  <div id="sidebar">
+    <h3>My Notes</h3>
+    <div id="notesList"></div>
+  </div>
+
+  <!-- Editor -->
+  <div id="editor">
+    <textarea id="editorArea" placeholder="Start writing here..."></textarea>
+    <div>
+      <button onclick="saveNote()">Save Note</button>
+      <button onclick="newNote()">New Note</button>
+    </div>
+  </div>
+
+ <script>
+  let notes = JSON.parse(localStorage.getItem("notes") || "[]");
+  let currentNoteIndex = null;
+
+  function renderNotes() {
+    const list = document.getElementById("notesList");
+    list.innerHTML = "";
+    notes.forEach((note, i) => {
+      const div = document.createElement("div");
+      div.className = "note-item";
+
+      // Title (clickable to load)
+      const span = document.createElement("span");
+      span.innerText = note.title || "Untitled";
+      span.style.flex = "1";
+      span.onclick = () => loadNote(i);
+
+      // Delete button
+      const delBtn = document.createElement("button");
+      delBtn.innerText = "❌";
+      delBtn.style.marginLeft = "10px";
+      delBtn.style.cursor = "pointer";
+      delBtn.onclick = (e) => {
+        e.stopPropagation(); // prevent loading note when clicking delete
+        deleteNote(i);
+      };
+
+      div.style.display = "flex";
+      div.style.justifyContent = "space-between";
+      div.style.alignItems = "center";
+
+      div.appendChild(span);
+      div.appendChild(delBtn);
+      list.appendChild(div);
+    });
+  }
+
+  function saveNote() {
+    const content = document.getElementById("editorArea").value;
+    const title = content.split("\n")[0].slice(0, 20); // first line as title
+
+    if (currentNoteIndex !== null) {
+      notes[currentNoteIndex] = { title, content };
+    } else {
+      notes.push({ title, content });
+      currentNoteIndex = notes.length - 1;
+    }
+
+    localStorage.setItem("notes", JSON.stringify(notes));
+    renderNotes();
+  }
+
+  function loadNote(index) {
+    currentNoteIndex = index;
+    document.getElementById("editorArea").value = notes[index].content;
+  }
+
+  function newNote() {
+    currentNoteIndex = null;
+    document.getElementById("editorArea").value = "";
+  }
+
+  function deleteNote(index) {
+    notes.splice(index, 1);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    if (currentNoteIndex === index) {
+      document.getElementById("editorArea").value = "";
+      currentNoteIndex = null;
+    }
+    renderNotes();
+  }
+
+  renderNotes();
+</script>
+
 </body>
-</html> 
+</html>
